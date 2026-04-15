@@ -5,21 +5,22 @@ mkdir(PictureFolder);
 %%
 %[text] ## Set up
 %[text] We'll measure time in hours
-%[text] Arrival rate: 10 per hour
-lambda = 10;
-%[text] Departure (service) rate: 1 per 5 minutes, so 12 per hour
-mu = 12;
+%[text] Arrival rate: 2 per hour
+lambda = 2;
+%[text] Departure (service) rate: 1 per 20 minutes, so 3 per hour
+mu = 3;
 %[text] Number of serving stations
 s = 1;
 %[text] Run many samples of the queue.
 NumSamples = 20;
 %[text] Each sample is run up to a maximum time.
-MaxTime = 96;
+MaxTime = 8;
 %[text] Make a log entry every so often
 LogInterval = 1/60;
 %%
 %[text] ## Numbers from theory for M/M/1 queue
 %[text] Compute `P(1+n)` = $P\_n$ = probability of finding the system in state $n$ in the long term. Note that this calculation assumes $s=1$.
+
 rho = lambda / mu;
 P0 = 1 - rho;
 nMax = 10;
@@ -28,6 +29,18 @@ P(1) = P0;
 for n = 1:nMax
     P(1+n) = P0 * rho^n;
 end
+
+% Compute L, Lq, W, Wq 
+Lq = rho^2 / (1-rho);
+L = Lq + rho;
+Wq = Lq / lambda;
+W  = L / lambda;
+fprintf("\n-- Theroetical Values (Baseline) ---\n");
+fprintf("L = %.4f\n", L);
+fprintf("L = %.4f\n", Lq);
+fprintf("W = %.4f hours (%.2f minutes) \n", W, W*60);
+fprintf("Wq = %.4f hours (%.2f minutes) \n", Wq, Wq*60);
+
 %%
 %[text] ## Run simulation samples
 %[text] This is the most time consuming calculation in the script, so let's put it in its own section.  That way, we can run it once, and more easily run the faster calculations multiple times as we add features to this script.
@@ -169,5 +182,5 @@ exportgraphics(fig, PictureFolder + filesep + "Time in system histogram.svg");
 %[appendix]{"version":"1.0"}
 %---
 %[metadata:view]
-%   data: {"layout":"inline"}
+%   data: {"layout":"onright","rightPanelPercent":9.2}
 %---
