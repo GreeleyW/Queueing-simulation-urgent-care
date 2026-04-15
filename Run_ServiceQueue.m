@@ -1,20 +1,20 @@
-%[text] # Run samples of the ServiceQueue simulation
+%[text] # Run samples of the ServiceQueue simulation William Greeley
 %[text] Collect statistics and plot histograms along the way.
 PictureFolder = "Pictures";
 mkdir(PictureFolder);
 %%
 %[text] ## Set up
 %[text] We'll measure time in hours
-%[text] Arrival rate: 10 per hour
-lambda = 10;
-%[text] Departure (service) rate: 1 per 5 minutes, so 12 per hour
-mu = 12;
+%[text] Arrival rate: 2 per hour
+lambda = 2;
+%[text] Departure (service) rate: 1 per 20 minutes, so 3 per hour
+mu = 3;
 %[text] Number of serving stations
 s = 1;
 %[text] Run many samples of the queue.
 NumSamples = 20;
 %[text] Each sample is run up to a maximum time.
-MaxTime = 96;
+MaxTime = 8;
 %[text] Make a log entry every so often
 LogInterval = 1/60;
 %%
@@ -23,11 +23,18 @@ LogInterval = 1/60;
 rho = lambda / mu;
 P0 = 1 - rho;
 nMax = 10;
+s = 1;
 P = zeros([1, nMax+1]);
 P(1) = P0;
 for n = 1:nMax
-    P(1+n) = P0 * rho^n;
+    %P(1+n) = P0 * rho^n;
+     if n <= s
+        P(1+n) = (1/factorial(n)) * (rho^n) * P0;
+    else
+        P(1+n) = (1/(factorial(s) * s^(n-s))) * (rho^n) * P0;
+    end
 end
+disp(P)
 %%
 %[text] ## Run simulation samples
 %[text] This is the most time consuming calculation in the script, so let's put it in its own section.  That way, we can run it once, and more easily run the faster calculations multiple times as we add features to this script.
