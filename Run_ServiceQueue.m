@@ -33,7 +33,9 @@ for n = 1:nMax
     else
         P(1+n) = (1/(factorial(s) * s^(n-s))) * (rho^n) * P0;
     end
+end
 
+%[text] Comput values 
 % Compute L, Lq, W, Wq 
 Lq = rho^2 / (1-rho);
 L = Lq + rho;
