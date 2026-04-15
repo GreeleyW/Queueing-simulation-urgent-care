@@ -1,4 +1,4 @@
-%[text] # Run samples of the ServiceQueue simulation William Greeley
+%[text] # Run samples of the ServiceQueue simulation William Greeley & Zach Bricker 
 %[text] Collect statistics and plot histograms along the way.
 PictureFolder = "Pictures";
 mkdir(PictureFolder);
