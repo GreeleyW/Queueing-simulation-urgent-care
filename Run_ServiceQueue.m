@@ -1,4 +1,4 @@
-%[text] # Run samples of the ServiceQueue simulation
+%[text] # Run samples of the ServiceQueue simulation William Greeley & Zach Bricker 
 %[text] Collect statistics and plot histograms along the way.
 PictureFolder = "Pictures";
 mkdir(PictureFolder);
@@ -20,15 +20,19 @@ LogInterval = 1/60;
 %%
 %[text] ## Numbers from theory for M/M/1 queue
 %[text] Compute `P(1+n)` = $P\_n$ = probability of finding the system in state $n$ in the long term. Note that this calculation assumes $s=1$.
-
 rho = lambda / mu;
 P0 = 1 - rho;
 nMax = 10;
+s = 1;
 P = zeros([1, nMax+1]);
 P(1) = P0;
 for n = 1:nMax
-    P(1+n) = P0 * rho^n;
-end
+    %P(1+n) = P0 * rho^n;
+     if n <= s
+        P(1+n) = (1/factorial(n)) * (rho^n) * P0;
+    else
+        P(1+n) = (1/(factorial(s) * s^(n-s))) * (rho^n) * P0;
+    end
 
 % Compute L, Lq, W, Wq 
 Lq = rho^2 / (1-rho);
@@ -111,7 +115,7 @@ title(ax, "Number of customers in the system");
 xlabel(ax, "Count");
 ylabel(ax, "Probability");
 legend(ax, "simulation", "theory");
-%[text] Set ranges on the axes. MATLAB's plotting functions do this automatically, but when you need to compare two sets of data, it's a good idea to use the same ranges on the two pictures.  To start, you can let MATLAB choose the ranges automatically, and just know that it might choose very different ranges for different sets of data.  Once you're certain the picture content is correct, choose an x range and a y range that gives good results for all sets of data.  The final choice of ranges is a matter of some trial and error.  You generally have to do these commands *after* calling `plot` and `histogram`.
+%[text] Set ranges on the axes. MATLAB's plotting functions do this automatically, but when you need to compare two sets of data, it's a good idea to use the same ranges on the two pictures.  To start, you can let MATLAB choose the ranges automatically, and just know that it might choose very different ranges for different sets of data.  Once you're certain the picture content is correct, choose an x range and a y range that gives good results for all sets of data.  The final choice of ranges is a matter of some trial and error.  You generally have to do these commands after calling `plot` and `histogram`.
 %[text] This sets the vertical axis to go from $0$ to $0.2$.
 ylim(ax, [0, 0.2]);
 %[text] This sets the horizontal axis to go from $-1$ to $21$.  The histogram will use bins $(-0.5, 0.5), (0.5, 1.5), \\dots$ so this leaves some visual breathing room on the left.
