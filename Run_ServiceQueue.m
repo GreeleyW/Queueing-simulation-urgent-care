@@ -1,7 +1,7 @@
 %[text] # Run samples of the ServiceQueue simulation William Greeley & Zach Bricker 
 %[text] Collect statistics and plot histograms along the way.
 PictureFolder = "Pictures";
-mkdir(PictureFolder); %[output:3135166a]
+mkdir(PictureFolder);
 %%
 %[text] ## Set up
 %[text] We'll measure time in hours
@@ -23,7 +23,6 @@ LogInterval = 1/60;
 rho = lambda / mu;
 P0 = 1 - rho;
 nMax = 10;
-s = 1;
 P = zeros([1, nMax+1]);
 P(1) = P0;
 for n = 1:nMax
@@ -41,11 +40,11 @@ Lq = rho^2 / (1-rho);
 L = Lq + rho;
 Wq = Lq / lambda;
 W  = L / lambda;
-fprintf("\n-- Theroetical Values (Baseline) ---\n"); %[output:62052388]
-fprintf("L = %.4f\n", L); %[output:3c85f130]
-fprintf("Lq = %.4f\n", Lq); %[output:37089a9b]
-fprintf("W = %.4f hours (%.2f minutes) \n", W, W*60); %[output:11b30dc4]
-fprintf("Wq = %.4f hours (%.2f minutes) \n", Wq, Wq*60); %[output:0fde40ac]
+fprintf("\n-- Theroetical Values (Baseline) ---\n");
+fprintf("L = %.4f\n", L);
+fprintf("Lq = %.4f\n", Lq);
+fprintf("W = %.4f hours (%.2f minutes) \n", W, W*60);
+fprintf("Wq = %.4f hours (%.2f minutes) \n", Wq, Wq*60);
 %[text] 
 %%
 %[text] ## Run simulation samples
@@ -55,22 +54,22 @@ rng("default");
 %[text] We'll store our queue simulation objects in this list.
 QSamples = cell([NumSamples, 1]);
 %[text] The statistics come out weird if the log interval is too short, because the log entries are not independent enough.  So the log interval should be long enough for several arrival and departure events happen.
-for SampleNum = 1:NumSamples %[output:group:0ca66f46]
+for SampleNum = 1:NumSamples
     if mod(SampleNum, 10) == 0
         fprintf("%d ", SampleNum);
     end
     if mod(SampleNum, 100) == 0
         fprintf("\n");
     end
-    q = ServiceQueue( ... %[output:0724858a]
-        ArrivalRate=lambda, ... %[output:0724858a]
-        DepartureRate=mu, ... %[output:0724858a]
-        NumServers=s, ... %[output:0724858a]
-        LogInterval=LogInterval); %[output:0724858a]
+    q = ServiceQueue( ...
+        ArrivalRate=lambda, ...
+        DepartureRate=mu, ...
+        NumServers=s, ...
+        LogInterval=LogInterval);
     q.schedule_event(Arrival(q.InterArrivalDist(), Customer(1)));
     run_until(q, MaxTime);
     QSamples{SampleNum} = q;
-end %[output:group:0ca66f46]
+end
 %%
 %[text] ## Collect measurements of how many customers are in the system
 %[text] `Count how many customers are in the system at each log entry for each sample run.  There are two ways to do this.  You only have to do one of them.`
@@ -325,26 +324,5 @@ fprintf("Wq = %.4f hours (%.2f minutes)\n", Wq_sim, Wq_sim * 60);
 %[appendix]{"version":"1.0"}
 %---
 %[metadata:view]
-%   data: {"layout":"onright","rightPanelPercent":6.9}
-%---
-%[output:3135166a]
-%   data: {"dataType":"warning","outputData":{"text":"Warning: Directory already exists."}}
-%---
-%[output:62052388]
-%   data: {"dataType":"text","outputData":{"text":"\n-- Theroetical Values (Baseline) ---\n","truncated":false}}
-%---
-%[output:3c85f130]
-%   data: {"dataType":"text","outputData":{"text":"L = 2.0000\n","truncated":false}}
-%---
-%[output:37089a9b]
-%   data: {"dataType":"text","outputData":{"text":"Lq = 1.3333\n","truncated":false}}
-%---
-%[output:11b30dc4]
-%   data: {"dataType":"text","outputData":{"text":"W = 1.0000 hours (60.00 minutes) \n","truncated":false}}
-%---
-%[output:0fde40ac]
-%   data: {"dataType":"text","outputData":{"text":"Wq = 0.6667 hours (40.00 minutes) \n","truncated":false}}
-%---
-%[output:0724858a]
-%   data: {"dataType":"error","outputData":{"errorType":"runtime","text":"makedist requires one of the following:\n  <a href=\"matlab:matlab.internal.addons.launchers.showExplorer('ErrorRecovery', 'identifier', 'SO', 'focused', 'makedist');\">Simulink Design Optimization<\/a>\n  <a href=\"matlab:matlab.internal.addons.launchers.showExplorer('ErrorRecovery', 'identifier', 'ST', 'focused', 'makedist');\">Statistics and Machine Learning Toolbox<\/a>\n\nError in <a href=\"matlab:matlab.lang.internal.introspective.errorDocCallback('ServiceQueue', '\/Users\/zachbricker\/Documents\/GitHub\/Queueing-simulation-urgent-care\/ServiceQueue.m', 117)\" style=\"font-weight:bold\">ServiceQueue<\/a> (<a href=\"matlab: opentoline('\/Users\/zachbricker\/Documents\/GitHub\/Queueing-simulation-urgent-care\/ServiceQueue.m',117,0)\">line 117<\/a>)\n                makedist(\"Exponential\", mu=1\/obj.ArrivalRate);\n                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^"}}
+%   data: {"layout":"inline"}
 %---
