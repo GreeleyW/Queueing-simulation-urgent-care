@@ -113,10 +113,8 @@ classdef ServiceQueue < handle
             end
 
             % Initialize the private properties of this instance.
-            obj.InterArrivalDist = ...
-                makedist("Exponential", mu=1/obj.ArrivalRate);
-            obj.ServiceDist = ...
-                makedist("Exponential", mu=1/obj.DepartureRate);
+            obj.InterArrivalDist = @() (-log(rand) / obj.ArrivalRate);
+obj.ServiceDist = @() (-log(rand) / obj.DepartureRate);
             obj.ServerAvailable = repelem(true, obj.NumServers);
             obj.Servers = cell([1, obj.NumServers]);
             % Events has to be initialized in the constructor.
@@ -189,7 +187,7 @@ classdef ServiceQueue < handle
             
             % It will arrive after a random time sampled from
             % obj.InterArrivalDist.
-            inter_arrival_time = random(obj.InterArrivalDist);
+           inter_arrival_time = obj.InterArrivalDist();
 
             % Build an Arrival instance that says that the next customer
             % arrives at the randomly determined time.
@@ -244,8 +242,8 @@ classdef ServiceQueue < handle
 
             % Sample ServiceDist to get the time it will take to serve this
             % customer.
-            service_time = random(obj.ServiceDist);
-
+            service_time = obj.ServiceDist();
+            
             % Schedule a Departure event so that after the service time,
             % the customer at station j departs.
             obj.schedule_event(Departure(obj.Time + service_time, j));
