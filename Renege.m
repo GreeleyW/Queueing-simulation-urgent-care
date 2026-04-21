@@ -1,22 +1,34 @@
 classdef Renege < Event
-    %UNTITLED2 Summary of this class goes here
-    %   Detailed explanation goes here
+    % Renege Subclass of Event that represents the renege of a
+    % customer from the queue.
 
     properties
-        Property1
+        % ServerIndex - Index of the service station from which the
+        % departure occurred
+        ServerIndex;
     end
-
     methods
-        function obj = untitled2(inputArg1,inputArg2)
-            %UNTITLED2 Construct an instance of this class
-            %   Detailed explanation goes here
-            obj.Property1 = inputArg1 + inputArg2;
-        end
+        function obj = Departure(Time, ServerIndex)
+            % Departure - Construct a departure event from a time and
+            % server index.
+            arguments
+                Time = 0.0;
+                ServerIndex = 0;
+            end
+            
+            % MATLAB-ism: This incantation is how to invoke the superclass
+            % constructor.
+            obj = obj@Event(Time);
 
-        function outputArg = method1(obj,inputArg)
-            %METHOD1 Summary of this method goes here
-            %   Detailed explanation goes here
-            outputArg = obj.Property1 + inputArg;
+            obj.ServerIndex = ServerIndex;
+        end
+        function varargout = visit(obj, other)
+            % visit - Call handle_departure
+
+            % MATLAB-ism: This incantation means whatever is returned by
+            % the call to handle_departure is returned by this visit
+            % method.
+            [varargout{1:nargout}] = handle_renege(other, obj);
         end
     end
 end
