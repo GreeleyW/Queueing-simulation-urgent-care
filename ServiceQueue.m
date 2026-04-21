@@ -26,9 +26,6 @@ classdef ServiceQueue < handle
         % interval.
         % The default is 1/60 of an hour (1 minute)
         LogInterval = 1/60;
-        
-        %This is the renege rate that will be controlling theta
-        RenegeRate = 5;
     
     end
 
@@ -80,14 +77,11 @@ classdef ServiceQueue < handle
         % * NumWaiting - How many customers are currently waiting
         % * NumInService - How many are currently being served
         % * NumServed -  How many have been served
-        Log = table(Size=[0, 5], ...
+        Log = table(Size=[0, 4], ...
             VariableNames=...
-            {'Time', 'NumWaiting', 'NumInService', 'NumServed', 'NumReneged'}, ...
+            {'Time', 'NumWaiting', 'NumInService', 'NumServed'}, ...
             VariableTypes=...
-            {'double', 'int64', 'int64', 'int64', 'int64'});
-
-        RenegeDist;
-        Reneged = {};
+            {'double', 'int64', 'int64', 'int64'});
     
     end
 
@@ -120,12 +114,9 @@ classdef ServiceQueue < handle
 
             % Initialize the private properties of this instance.
             obj.InterArrivalDist = @() (-log(rand) / obj.ArrivalRate);
-            obj.ServiceDist = @() (-log(rand) / obj.DepartureRate);
+obj.ServiceDist = @() (-log(rand) / obj.DepartureRate);
             obj.ServerAvailable = repelem(true, obj.NumServers);
             obj.Servers = cell([1, obj.NumServers]);
-            %initialized the properties of RenegeDist to have exponential
-            %dist based on RenegeRate
-            obj.RenegeDist = @() (-log(rand) / obj.RenegeRate);
             % Events has to be initialized in the constructor.
             obj.Events = PriorityQueue({}, @(x) x.Time);
 
@@ -189,13 +180,6 @@ classdef ServiceQueue < handle
 
             % The Customer is appended to the list of waiting customers.
             obj.Waiting{end+1} = c;
-
-            % If customer must wait, schedule a renege event
-            if ~any(obj.ServerAvailable)
-                renege_time = obj.RenegeDist();
-                renege_event = Renege(obj.Time + renege_time, c.Id);
-                schedule_event(obj, renege_event);
-            end
 
             % Construct the next Customer that will arrive.
             % Its Id is one higher than the one that just arrived.
@@ -326,35 +310,9 @@ classdef ServiceQueue < handle
             NumWaiting = length(obj.Waiting);
             NumInService = obj.NumServers - sum(obj.ServerAvailable);
             NumServed = length(obj.Served);
-            NumReneged = length(obj.Reneged);
 
             % MATLAB-ism: This is how to add a row to the end of a table.
-            obj.Log(end+1, :) = {obj.Time, NumWaiting, NumInService, NumServed, NumReneged};
-        end
-
-        function handle_renege(obj, renege)
-            % handle_renege Handle a Renege event
-        
-            customer_id = renege.CustomerId;
-        
-            % Look for the customer in the waiting list
-            for i = 1:length(obj.Waiting)
-                if obj.Waiting{i}.Id == customer_id
-                    % Customer reneges
-        
-                    customer = obj.Waiting{i};
-        
-                    % Add to reneged list
-                    obj.Reneged{end+1} = customer;
-        
-                    % Remove from waiting list
-                    obj.Waiting(i) = [];
-        
-                    return;
-                end
-            end
-        
-            % If customer is not found then do nothing
+            obj.Log(end+1, :) = {obj.Time, NumWaiting, NumInService, NumServed};
         end
     end
 end
