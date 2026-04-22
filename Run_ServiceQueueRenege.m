@@ -28,6 +28,7 @@ LogInterval = 1/60;
 % Mean renege time is 15 minutes = 0.25 hours, so theta = 4 per hour
 theta = 4;
 
+NMax = 10;
 %% Reneging theory
 %P0 = 1 / hypergeom([1], [mu/theta], lambda/theta);
 
