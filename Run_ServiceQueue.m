@@ -1,7 +1,7 @@
 %[text] # Run samples of the ServiceQueue simulation
 %[text] Collect statistics and plot histograms along the way.
 PictureFolder = "Pictures";
-mkdir(PictureFolder);
+mkdir(PictureFolder); %[output:17c8b728]
 %%
 %[text] ## Set up
 %[text] We'll measure time in hours
@@ -36,7 +36,7 @@ rng("default");
 %[text] We'll store our queue simulation objects in this list.
 QSamples = cell([NumSamples, 1]);
 %[text] The statistics come out weird if the log interval is too short, because the log entries are not independent enough.  So the log interval should be long enough for several arrival and departure events happen.
-for SampleNum = 1:NumSamples
+for SampleNum = 1:NumSamples %[output:group:4aaa3230]
     if mod(SampleNum, 10) == 0
         fprintf("%d ", SampleNum);
     end
@@ -48,10 +48,10 @@ for SampleNum = 1:NumSamples
         DepartureRate=mu, ...
         NumServers=s, ...
         LogInterval=LogInterval);
-    q.schedule_event(Arrival(random(q.InterArrivalDist), Customer(1)));
+    q.schedule_event(Arrival(random(q.InterArrivalDist), Customer(1))); %[output:29ad56dd]
     run_until(q, MaxTime);
     QSamples{SampleNum} = q;
-end
+end %[output:group:4aaa3230]
 %%
 %[text] ## Collect measurements of how many customers are in the system
 %[text] Count how many customers are in the system at each log entry for each sample run.  There are two ways to do this.  You only have to do one of them.
@@ -170,4 +170,10 @@ exportgraphics(fig, PictureFolder + filesep + "Time in system histogram.svg");
 %---
 %[metadata:view]
 %   data: {"layout":"inline"}
+%---
+%[output:17c8b728]
+%   data: {"dataType":"warning","outputData":{"text":"Warning: Directory already exists."}}
+%---
+%[output:29ad56dd]
+%   data: {"dataType":"error","outputData":{"errorType":"runtime","text":"random requires one of the following:\n  <a href=\"matlab:matlab.internal.addons.launchers.showExplorer('ErrorRecovery', 'identifier', 'SB', 'focused', 'random');\">SimBiology<\/a>\n  <a href=\"matlab:matlab.internal.addons.launchers.showExplorer('ErrorRecovery', 'identifier', 'ST', 'focused', 'random');\">Statistics and Machine Learning Toolbox<\/a>"}}
 %---
