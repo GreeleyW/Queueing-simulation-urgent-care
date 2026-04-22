@@ -1,3 +1,6 @@
+% Queue simulation part 3: Urgent care with reneging
+% Zach Bricker and William Greeley
+% April 22, 2026
 % Run samples of the ServiceQueue simulation William Greeley & Zach Bricker
 % Collect statistics and plot histograms along the way.
 
@@ -303,3 +306,10 @@ fprintf("Mean customers reneged per shift = %.4f\n", meanCustomersReneged);
 fprintf("Average fraction reneged = %.4f\n", meanFractionReneged);
 %fprintf("Theoretical pi_s = %.4f\n", pi_s_theory);
 fprintf("Simulated pi_s = %.4f\n", pi_s_sim);
+
+%% Comparison to baseline
+% Compared to the baseline urgent care system, reneging reduces congestion
+% because some customers leave before being served.
+% This lowers the average number in the system and average waiting time.
+% However, it also reduces the number of customers served and creates a
+% nonzero fraction of customers who leave without service.
