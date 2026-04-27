@@ -307,7 +307,7 @@ Lq_sim = mean(NumWaiting);
 W_sim = mean(TimeInSystem);
 Wq_sim = mean(TimeWaiting);
 
-fprintf("\n--- SIMULATION AVERAGES WITH RENEGING ---\n");
+fprintf("\n--- SIMULATION AVERAGES WITH RENEGING (2 Shifts with different arrival rates) ---\n");
 fprintf("L  = %.4f\n", L_sim);
 fprintf("Lq = %.4f\n", Lq_sim);
 fprintf("W  = %.4f hours (%.2f minutes)\n", W_sim, W_sim * 60);
