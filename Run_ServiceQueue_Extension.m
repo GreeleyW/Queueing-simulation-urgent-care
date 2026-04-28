@@ -25,7 +25,7 @@ s = 1;
 NumSamples = 20;
 
 % Each sample is run up to a maximum time
-MaxTime = 8;
+MaxTime = 24;
 
 % Make a log entry every so often
 LogInterval = 1/60;

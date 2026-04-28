@@ -175,5 +175,5 @@ exportgraphics(fig, PictureFolder + filesep + "Time in system histogram.svg");
 %   data: {"dataType":"warning","outputData":{"text":"Warning: Directory already exists."}}
 %---
 %[output:29ad56dd]
-%   data: {"dataType":"error","outputData":{"errorType":"runtime","text":"random requires one of the following:\n  <a href=\"matlab:matlab.internal.addons.launchers.showExplorer('ErrorRecovery', 'identifier', 'SB', 'focused', 'random');\">SimBiology<\/a>\n  <a href=\"matlab:matlab.internal.addons.launchers.showExplorer('ErrorRecovery', 'identifier', 'ST', 'focused', 'random');\">Statistics and Machine Learning Toolbox<\/a>"}}
+%   data: {"dataType":"error","outputData":{"errorType":"runtime","text":"Error using <a href=\"matlab:matlab.lang.internal.introspective.errorDocCallback('random', 'C:\\Program Files\\MATLAB\\R2025b\\toolbox\\stats\\stats\\random.m', 69)\" style=\"font-weight:bold\">random<\/a> (<a href=\"matlab: opentoline('C:\\Program Files\\MATLAB\\R2025b\\toolbox\\stats\\stats\\random.m',69,0)\">line 69<\/a>)\nProbability distribution name must be the name of a supported distribution."}}
 %---
